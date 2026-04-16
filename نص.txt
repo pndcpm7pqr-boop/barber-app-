@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💈 Barber Pro</title>
+
+<style>
+body{font-family:Arial;background:#111;color:#fff;margin:0;padding:20px}
+.card{background:#222;padding:15px;border-radius:12px;margin-top:10px}
+input{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:none}
+button{padding:10px;width:100%;margin-top:5px;border:none;border-radius:8px;background:#d4af37;font-weight:bold}
+</style>
+</head>
+
+<body>
+
+<h2>💈 Barber Pro</h2>
+
+<div class="card">
+<input id="phone" placeholder="رقم الجوال">
+<button onclick="search()">بحث</button>
+</div>
+
+<div id="result"></div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("customers") || "{}");
+
+function save(){
+localStorage.setItem("customers", JSON.stringify(data));
+}
+
+function search(){
+let phone = document.getElementById("phone").value;
+
+if(!data[phone]){
+data[phone] = {visits:0};
+}
+
+show(phone);
+}
+
+function show(phone){
+let c = data[phone];
+
+document.getElementById("result").innerHTML = `
+<div class='card'>
+<p>📞 ${phone}</p>
+<p>⭐ الزيارات: ${c.visits}</p>
+<button onclick="add('${phone}')">+1 زيارة</button>
+</div>`;
+}
+
+function add(phone){
+data[phone].visits++;
+save();
+show(phone);
+}
+</script>
+
+</body>
+</html>
